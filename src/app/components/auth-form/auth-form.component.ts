@@ -35,11 +35,10 @@ export class AuthFormComponent implements OnInit {
 
     async showLoading(): Promise<void> {
         try {
-            await this.loading.present();
-            this.loading = await this.loadingCtrl.create();
-            await this.loading.present();
+          this.loading = await this.loadingCtrl.create();
+          await this.loading.present();
         } catch (error) {
-            this.handleError(error);
+          this.handleError(error);
         }
     }
 
