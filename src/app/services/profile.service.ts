@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 
-import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
+// import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore';
 import { UserProfile } from '../models/user';
 
 @Injectable({
@@ -14,12 +15,21 @@ import { UserProfile } from '../models/user';
 export class ProfileService {
 
     // Hold the document for the profile in the database.
-    private userProfile: AngularFirestoreDocument<UserProfile>;
+
+    // @angular/fire/firestore.
+    // private userProfile: AngularFirestoreDocument<UserProfile>;
+    // Firebase web sdk.
+    private userProfile: firebase.firestore.DocumentReference;
+
     // Hold our authentication object for the user.
     private currentUser: firebase.User;
 
-    constructor(private firestore: AngularFirestore, private authService: AuthService) { }
+    constructor(/*private firestore: AngularFirestore,*/ private authService: AuthService) { }
 
+
+    // Method using @angular/fire.
+
+    /*
     async getUserProfile(): Promise<Observable<UserProfile>> {
         const user: firebase.User = await this.authService.getUser();
         this.currentUser = user;
@@ -27,9 +37,28 @@ export class ProfileService {
         // Returns that document's .valueChanges() (which converts that document to an observable).
         return this.userProfile.valueChanges();
     }
+    */
+
+    // Method using firebase web sdk.
+    async getUserProfile(): Promise<firebase.firestore.DocumentSnapshot> {
+        const user: firebase.User = await this.authService.getUser();
+        this.currentUser = user;
+        this.userProfile = firebase.firestore().doc(`userProfile/${user.uid}`);
+        return this.userProfile.get();
+    }
 
     updateName(fullName: string): Promise<void> {
         return this.userProfile.update({ fullName });
+    }
+
+    /*
+    updateName(firstName: string, lastName: string): Promise<void> {
+        return this.userProfile.set({ firstName, lastName }, { merge: true });
+    }
+    */
+
+    updateDOB(birthDate: string): Promise<void> {
+        return this.userProfile.set({ birthDate }, { merge: true });
     }
 
     // Now we need a function to update the user's email, notice that we don't only need to update it from
@@ -60,4 +89,5 @@ export class ProfileService {
             console.error(error);
         }
     }
+
 }

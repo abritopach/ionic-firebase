@@ -12,16 +12,28 @@ import { UserProfile } from 'src/app/models/user';
 })
 export class ProfilePage implements OnInit {
 
-    public userProfile: UserProfile;
+    // Using @angular/fire.
+    // public userProfile: UserProfile;
+    public userProfile: any = {};
 
     constructor(private authService: AuthService, private router: Router, private profileService: ProfileService,
                 private alertCtrl: AlertController) { }
 
     ngOnInit() {
+
+        // Using @angular/fire.
+        /*
         this.profileService.getUserProfile().then(profile$ => {
             profile$.subscribe(userProfile => {
                 this.userProfile = userProfile;
             });
+        });
+        */
+
+        this.profileService.getUserProfile().then(userProfileSnapshot => {
+            if (userProfileSnapshot.data()) {
+              this.userProfile = userProfileSnapshot.data();
+            }
         });
     }
 
@@ -53,6 +65,13 @@ export class ProfilePage implements OnInit {
         });
         return await alert.present();
     }
+
+    updateDOB(birthDate: string): void {
+        if (birthDate === undefined) {
+          return;
+        }
+        this.profileService.updateDOB(birthDate);
+     }
 
     async updateEmail(): Promise<void> {
         const alert = await this.alertCtrl.create({
