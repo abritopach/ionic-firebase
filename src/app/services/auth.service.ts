@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
 
 // Access the authentication module.
-import { AngularFireAuth } from '@angular/fire/auth';
+// import { AngularFireAuth } from '@angular/fire/auth';
 // Access the Firestore module.
-import { AngularFirestore } from '@angular/fire/firestore';
+// import { AngularFirestore } from '@angular/fire/firestore';
 // Transform the current user response from an observable into a promise.
-import { first } from 'rxjs/operators';
+// import { first } from 'rxjs/operators';
+
+
+// Firebase web sdk.
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +20,47 @@ export class AuthService {
 
     public userId: string;
 
-    constructor(private angularFireAuth: AngularFireAuth, private angularFirestore: AngularFirestore) { }
+    constructor(/*private angularFireAuth: AngularFireAuth, private angularFirestore: AngularFirestore*/) { }
+
+
+    // Methods using firebase web sdk.
+
+    getUser(): Promise<firebase.User> {
+        return new Promise((resolve, reject) => {
+          firebase.auth().onAuthStateChanged(
+            user => {
+              if (user) {
+                resolve(user);
+              } else {
+                reject(null);
+              }
+            },
+            error => {
+              reject(error);
+            }
+          );
+        });
+      }
+
+    login(email: string, password: string): Promise<firebase.auth.UserCredential> {
+        return firebase.auth().signInWithEmailAndPassword(email, password);
+    }
+
+    signup(email: string, password: string): Promise<firebase.auth.UserCredential> {
+        return firebase.auth().createUserWithEmailAndPassword(email, password);
+    }
+
+    resetPassword(email: string): Promise<void> {
+        return firebase.auth().sendPasswordResetEmail(email);
+    }
+
+    logout(): Promise<void> {
+        return firebase.auth().signOut();
+    }
+
+    // Methods using @angular/fire
+
+    /*
 
     // Return the current user.
     getUser(): Promise<firebase.User> {
@@ -49,4 +95,6 @@ export class AuthService {
     logout(): Promise<void> {
         return this.angularFireAuth.auth.signOut();
     }
+
+    */
 }
