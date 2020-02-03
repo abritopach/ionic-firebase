@@ -24,7 +24,10 @@ export class EventDetailPage implements OnInit {
 
     addGuest(guestName: string): void {
         this.eventService.addGuest(guestName, this.currentEvent.id, this.currentEvent.price)
-        .then(() => this.guestName = '' );
+        .then(() => {
+            this.currentEvent.revenue = this.currentEvent.revenue + this.currentEvent.price;
+            this.guestName = '';
+        });
     }
 
 }

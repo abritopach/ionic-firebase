@@ -43,9 +43,26 @@ export class EventService {
         return this.eventListRef.doc(eventId).get();
     }
 
-    async addGuest(guestName: string, eventId: string, eventPrice: number): Promise<firebase.firestore.DocumentReference> {
+    async addGuest(guestName: string, eventId: string, eventPrice: number): Promise<void>/*Promise<firebase.firestore.DocumentReference>*/ {
+
+        /*
         const user: firebase.User = await this.authService.getUser();
         this.eventListRef = firebase.firestore().collection(`userProfile/${user.uid}/eventList`);
         return this.eventListRef.doc(eventId).collection('guestList').add({ guestName });
+        */
+
+        return this.eventListRef
+            .doc(eventId)
+            .collection('guestList')
+            .add({ guestName })
+            .then((newGuest) => {
+                return firebase.firestore().runTransaction(transaction => {
+                    return transaction.get(this.eventListRef.doc(eventId)).then(eventDoc => {
+                    const newRevenue = eventDoc.data().revenue + eventPrice;
+                    transaction.update(this.eventListRef.doc(eventId), { revenue: newRevenue });
+                });
+            });
+        });
     }
+
 }
