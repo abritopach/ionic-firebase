@@ -3,6 +3,8 @@ import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import { AuthService } from '../user/auth.service';
 
+import { Event } from '../../models/event';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -13,7 +15,7 @@ export class EventService {
 
     constructor(private authService: AuthService) { }
 
-    async createEvent(eventName: string, eventDate: string, eventPrice: number, eventCost: number):
+    async createEvent(newEvent: Event):
      Promise < firebase.firestore.DocumentReference > {
         const user: firebase.User = await this.authService.getUser();
         this.eventListRef = firebase.firestore().collection(`userProfile/${user.uid}/eventList`);
@@ -22,13 +24,12 @@ export class EventService {
         // be two objects with the same ID.
         // Sometimes the function was trying to save the numbers as strings, so we're adding the * 1 to ensure
         // it's a number.
-        return this.eventListRef.add({
-            name: eventName,
-            date: eventDate,
-            price: eventPrice * 1,
-            cost: eventCost * 1,
-            revenue: eventCost * -1,
-        });
+
+        newEvent.price = newEvent.price * 1;
+        newEvent.cost = newEvent.cost * 1;
+        newEvent.revenue = newEvent.cost * -1;
+
+        return this.eventListRef.add(newEvent);
     }
 
     async getEventList(): Promise<firebase.firestore.QuerySnapshot> {

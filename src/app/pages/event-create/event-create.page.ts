@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventService } from '../../services/event/event.service';
 
+import { Event } from '../../models/event';
+
 @Component({
     selector: 'app-event-create',
     templateUrl: './event-create.page.html',
@@ -10,17 +12,24 @@ import { EventService } from '../../services/event/event.service';
 })
 export class EventCreatePage implements OnInit {
 
+    event: Event = {
+        name: '',
+        cost: 0,
+        date: '',
+        price: 0,
+        revenue: 0
+    };
+
     constructor(private router: Router, private eventService: EventService) { }
 
     ngOnInit() {
     }
 
-    createEvent(eventName: string, eventDate: string, eventPrice: number, eventCost: number): void {
-        if (eventName === undefined || eventDate === undefined || eventPrice === undefined
-            || eventCost === undefined) {
+    createEvent(): void {
+        if (this.event.name === '') {
             return;
         }
-        this.eventService.createEvent(eventName, eventDate, eventPrice, eventCost).then(() => {
+        this.eventService.createEvent(this.event).then(() => {
             // Go back to the HomePage.
             this.router.navigateByUrl('home');
         });
