@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 export class EventDetailPage implements OnInit {
 
     private currentEvent: any = {};
+    private guestName = '';
 
     constructor(private eventService: EventService, private route: ActivatedRoute,) { }
 
@@ -19,6 +20,11 @@ export class EventDetailPage implements OnInit {
             this.currentEvent = eventSnapshot.data();
             this.currentEvent.id = eventSnapshot.id;
         });
+    }
+
+    addGuest(guestName: string): void {
+        this.eventService.addGuest(guestName, this.currentEvent.id, this.currentEvent.price)
+        .then(() => this.guestName = '' );
     }
 
 }

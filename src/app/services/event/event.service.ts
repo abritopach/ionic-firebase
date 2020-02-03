@@ -42,4 +42,10 @@ export class EventService {
         this.eventListRef = firebase.firestore().collection(`userProfile/${user.uid}/eventList`);
         return this.eventListRef.doc(eventId).get();
     }
+
+    async addGuest(guestName: string, eventId: string, eventPrice: number): Promise<firebase.firestore.DocumentReference> {
+        const user: firebase.User = await this.authService.getUser();
+        this.eventListRef = firebase.firestore().collection(`userProfile/${user.uid}/eventList`);
+        return this.eventListRef.doc(eventId).collection('guestList').add({ guestName });
+    }
 }
