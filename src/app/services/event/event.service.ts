@@ -44,7 +44,7 @@ export class EventService {
         return this.eventListRef.doc(eventId).get();
     }
 
-    async addGuest(guestName: string, eventId: string, eventPrice: number): Promise<void>/*Promise<firebase.firestore.DocumentReference>*/ {
+    async addGuest(guestName: string, event: Event): Promise<void>/*Promise<firebase.firestore.DocumentReference>*/ {
 
         /*
         const user: firebase.User = await this.authService.getUser();
@@ -53,14 +53,14 @@ export class EventService {
         */
 
         return this.eventListRef
-            .doc(eventId)
+            .doc(event.id)
             .collection('guestList')
             .add({ guestName })
             .then((newGuest) => {
                 return firebase.firestore().runTransaction(transaction => {
-                    return transaction.get(this.eventListRef.doc(eventId)).then(eventDoc => {
-                    const newRevenue = eventDoc.data().revenue + eventPrice;
-                    transaction.update(this.eventListRef.doc(eventId), { revenue: newRevenue });
+                    return transaction.get(this.eventListRef.doc(event.id)).then(eventDoc => {
+                    const newRevenue = eventDoc.data().revenue + event.price;
+                    transaction.update(this.eventListRef.doc(event.id), { revenue: newRevenue });
                 });
             });
         });

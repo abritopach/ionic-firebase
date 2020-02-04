@@ -14,7 +14,7 @@ export class ProfilePage implements OnInit {
 
     // Using @angular/fire.
     // public userProfile: UserProfile;
-    public userProfile: any = {};
+    public userProfile: UserProfile;
 
     constructor(private authService: AuthService, private router: Router, private profileService: ProfileService,
                 private alertCtrl: AlertController) { }
@@ -32,7 +32,7 @@ export class ProfilePage implements OnInit {
 
         this.profileService.getUserProfile().then(userProfileSnapshot => {
             if (userProfileSnapshot.data()) {
-              this.userProfile = userProfileSnapshot.data();
+                this.userProfile = userProfileSnapshot.data() as UserProfile;
             }
         });
     }
@@ -58,9 +58,15 @@ export class ProfilePage implements OnInit {
                 {
                     text: 'Save',
                     handler: data => {
-                    this.profileService.updateName(data.fullName);
+                        this.profileService.updateName(data.fullName).then(() => {
+                            console.log('Fullname Changed Successfully');
+                            this.userProfile.fullName = data.fullName;
+                        })
+                        .catch(error => {
+                            console.log('ERROR: ' + error.message);
+                        });
+                    }
                 }
-            }
             ]
         });
         return await alert.present();
@@ -70,7 +76,13 @@ export class ProfilePage implements OnInit {
         if (birthDate === undefined) {
           return;
         }
-        this.profileService.updateDOB(birthDate);
+        this.profileService.updateDOB(birthDate).then(() => {
+            console.log('Birthdate Changed Successfully');
+            this.userProfile.birthDate = birthDate;
+        })
+        .catch(error => {
+            console.log('ERROR: ' + error.message);
+        });
      }
 
     async updateEmail(): Promise<void> {
@@ -86,6 +98,7 @@ export class ProfilePage implements OnInit {
                     handler: data => {
                         this.profileService.updateEmail(data.newEmail, data.password).then(() => {
                             console.log('Email Changed Successfully');
+                            this.userProfile.email = data.newEmail;
                         })
                         .catch(error => {
                             console.log('ERROR: ' + error.message);
