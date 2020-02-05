@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/storage';
 import { AuthService } from '../user/auth.service';
 
 import { Event } from '../../models/event';
@@ -44,7 +45,8 @@ export class EventService {
         return this.eventListRef.doc(eventId).get();
     }
 
-    async addGuest(guestName: string, event: Event): Promise<void>/*Promise<firebase.firestore.DocumentReference>*/ {
+    async addGuest(guestName: string, event: Event, guestPicture: string = null): Promise<void>
+    /*Promise<firebase.firestore.DocumentReference>*/ {
 
         /*
         const user: firebase.User = await this.authService.getUser();
@@ -53,14 +55,34 @@ export class EventService {
         */
 
         return this.eventListRef
-            .doc(event.id)
-            .collection('guestList')
-            .add({ guestName })
-            .then((newGuest) => {
-                return firebase.firestore().runTransaction(transaction => {
-                    return transaction.get(this.eventListRef.doc(event.id)).then(eventDoc => {
-                    const newRevenue = eventDoc.data().revenue + event.price;
-                    transaction.update(this.eventListRef.doc(event.id), { revenue: newRevenue });
+        .doc(event.id)
+        .collection('guestList')
+        .add({ guestName })
+        .then((newGuest) => {
+            return firebase.firestore().runTransaction(transaction => {
+                return transaction.get(this.eventListRef.doc(event.id)).then(eventDoc => {
+                const newRevenue = eventDoc.data().revenue + event.price;
+                transaction.update(this.eventListRef.doc(event.id), { revenue: newRevenue });
+
+                if (guestPicture != null) {
+                    const storageRef = firebase
+                    .storage()
+                        // We are creating a reference to our Firebase Storage.
+                    .ref(`/guestProfile/${newGuest.id}/profilePicture.png`);
+                    return storageRef
+                        // We store our file. To save it we use the .putString() method, and pass it the
+                        // base64 string we got from the Camera Plugin.
+                        .putString(guestPicture, 'base64', { contentType: 'image/png' })
+                        .then(() => {
+                            return storageRef.getDownloadURL().then(downloadURL => {
+                                return this.eventListRef
+                                .doc(event.id)
+                                .collection('guestList')
+                                .doc(newGuest.id)
+                                .update({ profilePicture: downloadURL });
+                            });
+                        });
+                    }
                 });
             });
         });

@@ -5,14 +5,14 @@
 export const environment = {
     production: false,
     firebaseConfig: {
-        apiKey: '',
-        authDomain: '',
-        databaseURL: '',
-        projectId: '',
-        storageBucket: '',
-        messagingSenderId: '',
-        appId: ''
-    }
+        apiKey: 'AIzaSyBUpn_6iTEA3SQOHfd2QGtO0E4r7DQTocg',
+        authDomain: 'ionic-firebase-78382.firebaseapp.com',
+        databaseURL: 'https://ionic-firebase-78382.firebaseio.com',
+        projectId: 'ionic-firebase-78382',
+        storageBucket: 'ionic-firebase-78382.appspot.com',
+        messagingSenderId: '1002468978728',
+        appId: '1:1002468978728:web:e08bed8133563d723a051d'
+        }
 };
 
 /*
