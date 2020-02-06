@@ -88,4 +88,10 @@ export class EventService {
         });
     }
 
+    async getEventGuestsList(eventId: string): Promise<firebase.firestore.QuerySnapshot> {
+        const user: firebase.User = await this.authService.getUser();
+        this.eventListRef = firebase.firestore().collection(`userProfile/${user.uid}/eventList/${eventId}/guestList`);
+        return this.eventListRef.get();
+    }
+
 }

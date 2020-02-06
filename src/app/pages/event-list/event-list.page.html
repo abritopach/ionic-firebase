@@ -16,6 +16,7 @@
                 <p>Ticket: <strong>${{event?.price}}</strong></p>
                 <p>Date: <strong>{{event?.date}}</strong></p>
             </ion-label>
+            <ion-badge *ngIf="eventGuests[event?.id] != 0" color="primary" slot="end">{{eventGuests[event?.id]}} GUESTS</ion-badge>
         </ion-item>
     </ion-list>
 </ion-content>
