@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
 })
 export class LoginPage implements OnInit {
 
+
+    currentYear = new Date().getFullYear();
+
     @ViewChild(AuthFormComponent, { static: false }) loginForm: AuthFormComponent;
 
     constructor(private authService: AuthService, private router: Router) { }
@@ -26,7 +29,7 @@ export class LoginPage implements OnInit {
             );
             this.authService.userId = userCredential.user.uid;
             await this.loginForm.hideLoading();
-            this.router.navigateByUrl('home');
+            this.router.navigateByUrl('event-list');
         } catch (error) {
             await this.loginForm.hideLoading();
             this.loginForm.handleError(error);

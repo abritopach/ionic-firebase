@@ -10,13 +10,16 @@ import { LoginPage } from './login.page';
 
 import { AuthModule } from 'src/app/shared-modules/auth.module';
 
+import { NtkmeButtonModule } from '@ctrl/ngx-github-buttons';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     LoginPageRoutingModule,
-    AuthModule
+    AuthModule,
+    NtkmeButtonModule
   ],
   declarations: [LoginPage]
 })
