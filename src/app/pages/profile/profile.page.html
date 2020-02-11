@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar color="primary">
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="/home"></ion-back-button>
+            <ion-back-button defaultHref="/event-list"></ion-back-button>
         </ion-buttons>
         <ion-title>Profile Page</ion-title>
         <ion-buttons slot="end">
@@ -16,6 +16,9 @@
     <ion-list>
         <ion-list-header> Personal Information </ion-list-header>
     </ion-list>
+    <ion-avatar>
+        <img src="https://i.pravatar.cc/300" alt="Profile picture">
+    </ion-avatar>
     <form>
         <ion-item (click)="updateName()">
             <ion-label>
