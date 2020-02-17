@@ -48,7 +48,12 @@ export class ProfileService {
     }
 
     updateName(fullName: string): Promise<void> {
-        return this.userProfile.update({ fullName });
+        this.currentUser.updateProfile({
+            displayName: fullName
+          }).then((s)=> {
+            return this.userProfile.update({ fullName });
+        })
+        return Promise.resolve(null);
     }
 
     /*

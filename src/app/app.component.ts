@@ -14,7 +14,7 @@ import { AuthGuard } from './services/user/auth.guard';
 })
 export class AppComponent {
 
-    isUserLogged = false;
+    userLogged: firebase.User;
 
     public appPages = [
         {
@@ -37,7 +37,7 @@ export class AppComponent {
         firebase.initializeApp(environment.firebaseConfig);
         this.platform.ready().then(() => {
             this.authGuard.authenticationState.subscribe(state => {
-                this.isUserLogged = state;
+                this.userLogged = state;
             });
         });
     }

@@ -12,7 +12,7 @@ import 'firebase/auth';
 })
 export class AuthGuard implements CanActivate {
 
-    authenticationState = new BehaviorSubject(false);
+    authenticationState: BehaviorSubject<firebase.User> = new BehaviorSubject(null);
 
     constructor(private router: Router) {}
 
@@ -25,13 +25,13 @@ export class AuthGuard implements CanActivate {
             // redirect the user to the login page.
             firebase.auth().onAuthStateChanged((user: firebase.User) => {
                 if (user) {
-                    console.log('User logged in.');
-                    this.authenticationState.next(true);
+                    console.log('User logged in.', user);
+                    this.authenticationState.next(user);
                     resolve(true);
                 } else {
-                    console.log('User is not logged in.');
+                    console.log('User is not logged in.', user);
                     this.router.navigate(['/login']);
-                    this.authenticationState.next(false);
+                    this.authenticationState.next(user);
                     resolve(false);
                 }
             });
