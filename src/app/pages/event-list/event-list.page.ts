@@ -23,9 +23,7 @@ export class EventListPage implements OnInit {
     getEventList() {
         this.eventService.getEventList().then(eventListSnapshot => {
             this.eventList = [];
-            console.log(eventListSnapshot);
             eventListSnapshot.forEach(snap => {
-                console.log(snap);
                 this.eventList.push({
                     id: snap.id,
                     name: snap.data().name,
@@ -44,9 +42,7 @@ export class EventListPage implements OnInit {
     getEventGuestsList(eventId: string) {
         this.eventService.getEventGuestsList(eventId).then(eventGuestsListSnapshot => {
             this.eventGuests[eventId] = eventGuestsListSnapshot.size;
-            console.log(eventGuestsListSnapshot.size);
             eventGuestsListSnapshot.forEach(snap => {
-                console.log(snap.data().guestName);
                 return false;
             });
         });

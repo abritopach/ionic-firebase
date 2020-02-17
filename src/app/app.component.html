@@ -1,5 +1,5 @@
 <ion-app>
-    <ion-split-pane contentId="main">
+    <ion-split-pane contentId="main" [when]="isUserLogged && 'md'">
         <!--  our side menu  -->
         <ion-menu contentId="main">
             <ion-header>

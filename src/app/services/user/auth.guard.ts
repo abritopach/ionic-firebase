@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 // We're importing the core of Firebase functionality and then adding the auth
 // functionality to the namespace.
@@ -11,6 +11,8 @@ import 'firebase/auth';
     providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+
+    authenticationState = new BehaviorSubject(false);
 
     constructor(private router: Router) {}
 
@@ -23,11 +25,14 @@ export class AuthGuard implements CanActivate {
             // redirect the user to the login page.
             firebase.auth().onAuthStateChanged((user: firebase.User) => {
                 if (user) {
-                resolve(true);
+                    console.log('User logged in.');
+                    this.authenticationState.next(true);
+                    resolve(true);
                 } else {
-                console.log('User is not logged in');
-                this.router.navigate(['/login']);
-                resolve(false);
+                    console.log('User is not logged in.');
+                    this.router.navigate(['/login']);
+                    this.authenticationState.next(false);
+                    resolve(false);
                 }
             });
         });
