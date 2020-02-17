@@ -37,11 +37,6 @@ export class ProfilePage implements OnInit {
         });
     }
 
-    async logOut(): Promise<void> {
-        await this.authService.logout();
-        this.router.navigateByUrl('login');
-    }
-
     async updateName(): Promise<void> {
         const alert = await this.alertCtrl.create({
             subHeader: 'Your name',

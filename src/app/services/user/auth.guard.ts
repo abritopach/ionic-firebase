@@ -25,11 +25,11 @@ export class AuthGuard implements CanActivate {
             // redirect the user to the login page.
             firebase.auth().onAuthStateChanged((user: firebase.User) => {
                 if (user) {
-                    console.log('User logged in.', user);
+                    console.log('User logged in.');
                     this.authenticationState.next(user);
                     resolve(true);
                 } else {
-                    console.log('User is not logged in.', user);
+                    console.log('User is not logged in.');
                     this.router.navigate(['/login']);
                     this.authenticationState.next(user);
                     resolve(false);

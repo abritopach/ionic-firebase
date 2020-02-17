@@ -6,6 +6,8 @@ import * as firebase from 'firebase/app';
 import { environment } from 'src/environments/environment';
 
 import { AuthGuard } from './services/user/auth.guard';
+import { AuthService } from './services/user/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-root',
@@ -29,7 +31,8 @@ export class AppComponent {
         }
     ];
 
-    constructor(private platform: Platform, private authGuard: AuthGuard) {
+    constructor(private platform: Platform, private authGuard: AuthGuard, private authService: AuthService,
+                private router: Router) {
         this.initializeApp();
     }
 
@@ -40,5 +43,10 @@ export class AppComponent {
                 this.userLogged = state;
             });
         });
+    }
+
+    async logOut(): Promise<void> {
+        await this.authService.logout();
+        this.router.navigateByUrl('login');
     }
 }
