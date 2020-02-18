@@ -1,24 +1,27 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable /*, BehaviorSubject*/ } from 'rxjs';
 
 // We're importing the core of Firebase functionality and then adding the auth
 // functionality to the namespace.
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
+// import * as firebase from 'firebase/app';
+// import 'firebase/auth';
+import { AuthService } from './auth.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-    authenticationState: BehaviorSubject<firebase.User> = new BehaviorSubject(null);
+    // authenticationState: BehaviorSubject<firebase.User> = new BehaviorSubject(null);
 
-    constructor(private router: Router) {}
+    constructor(private router: Router, private authService: AuthService) {}
 
     canActivate(
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+            return this.authService.isUserLogged();
+        /*
         return new Promise((resolve, reject) => {
             // We're using the onAuthStateChanged() function to see if there's a user, if there is, we
             // resolve the promise with true, if there isn't, we send back false and use the router to
@@ -36,5 +39,6 @@ export class AuthGuard implements CanActivate {
                 }
             });
         });
+        */
     }
 }

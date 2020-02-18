@@ -27,6 +27,7 @@ export class LoginPage implements OnInit {
                 credentials.email,
                 credentials.password
             );
+            this.authService.authStateChanged();
             this.authService.userId = userCredential.user.uid;
             await this.loginForm.hideLoading();
             this.router.navigateByUrl('event-list');

@@ -5,7 +5,7 @@ import { Platform } from '@ionic/angular';
 import * as firebase from 'firebase/app';
 import { environment } from 'src/environments/environment';
 
-import { AuthGuard } from './services/user/auth.guard';
+// import { AuthGuard } from './services/user/auth.guard';
 import { AuthService } from './services/user/auth.service';
 import { Router } from '@angular/router';
 
@@ -31,7 +31,7 @@ export class AppComponent {
         }
     ];
 
-    constructor(private platform: Platform, private authGuard: AuthGuard, private authService: AuthService,
+    constructor(private platform: Platform, /*private authGuard: AuthGuard,*/ private authService: AuthService,
                 private router: Router) {
         this.initializeApp();
     }
@@ -39,7 +39,8 @@ export class AppComponent {
     initializeApp() {
         firebase.initializeApp(environment.firebaseConfig);
         this.platform.ready().then(() => {
-            this.authGuard.authenticationState.subscribe(state => {
+            //this.authGuard.authenticationState.subscribe(state => {
+            this.authService.userState.subscribe(state => {
                 this.userLogged = state;
             });
         });

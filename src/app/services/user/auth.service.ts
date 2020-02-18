@@ -12,6 +12,7 @@ import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -20,15 +21,32 @@ export class AuthService {
 
     public userId: string;
 
+    authenticationState = new BehaviorSubject(false);
+    userState: BehaviorSubject<firebase.User> = new BehaviorSubject(null);
+
     constructor(/*private angularFireAuth: AngularFireAuth, private angularFirestore: AngularFirestore*/) { }
 
 
     // Methods using firebase web sdk.
 
+    authStateChanged() {
+      firebase.auth().onAuthStateChanged((user: firebase.User) => {
+        if (user) {
+            console.log('User logged in.');
+            this.authenticationState.next(true);
+            this.userState.next(user);
+        } else {
+            console.log('User is not logged in.');
+            this.authenticationState.next(false);
+            this.userState.next(user);
+        }
+      });
+    }
+
     getUser(): Promise<firebase.User> {
         return new Promise((resolve, reject) => {
           firebase.auth().onAuthStateChanged(
-            user => {
+            (user: firebase.User) => {
               if (user) {
                 resolve(user);
               } else {
@@ -56,6 +74,10 @@ export class AuthService {
 
     logout(): Promise<void> {
         return firebase.auth().signOut();
+    }
+
+    isUserLogged() {
+      return this.authenticationState.value;
     }
 
     // Methods using @angular/fire
