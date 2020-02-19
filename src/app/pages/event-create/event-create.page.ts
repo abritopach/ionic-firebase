@@ -15,7 +15,7 @@ export class EventCreatePage implements OnInit {
     event: Event = {
         name: '',
         cost: 0,
-        date: '',
+        date: new Date(),
         price: 0,
         revenue: 0
     };
