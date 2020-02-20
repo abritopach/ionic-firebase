@@ -1,0 +1,14 @@
+<form [formGroup]="eventForm">
+  <ion-item>
+      <ion-label position="stacked">Name</ion-label>
+      <ion-input formControlName="name" type="text" placeholder="What's your event's name?"
+      [class.invalid]="!eventForm.controls['name'].valid && authForm.controls['name'].touched">
+      </ion-input>
+  </ion-item>
+  <ion-item class="error-message" *ngIf="!authForm.controls['name'].valid && authForm.controls['name'].touched">
+    <ion-label>Please enter a valid event name.</ion-label>
+  </ion-item>
+  <ion-button (click)="submitEvent(eventForm)" expand="block" [disabled]="!eventForm.valid">
+      {{ actionButtonText }}
+  </ion-button>
+</form>
