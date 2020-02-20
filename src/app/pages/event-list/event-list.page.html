@@ -38,10 +38,11 @@
                     <p>Date: <strong>{{event?.date | date}}</strong></p>
                 </ion-label>
                 <ion-badge *ngIf="eventGuests[event?.id] != 0" color="primary" slot="end">{{eventGuests[event?.id]}} GUESTS</ion-badge>
+                <ion-icon name="swap-horizontal-outline" slot="end"></ion-icon>
             </ion-item>
             <ion-item-options side="end">
                 <ion-item-option>Edit</ion-item-option>
-                <ion-item-option color="danger">Delete</ion-item-option>
+                <ion-item-option color="danger" (click)="deleteEvent(event?.id)">Delete</ion-item-option>
             </ion-item-options>
         </ion-item-sliding>
     </ion-list>

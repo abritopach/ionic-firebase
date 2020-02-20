@@ -17,6 +17,11 @@ export class EventListPage implements OnInit {
     constructor(private eventService: EventService) { }
 
     ngOnInit() {
+        console.log('EventListPage::ngOnInit');
+    }
+
+    ionViewDidEnter() {
+        console.log('EventListPage::ionViewDidEnter');
         this.getEventList();
     }
 
@@ -45,6 +50,16 @@ export class EventListPage implements OnInit {
             eventGuestsListSnapshot.forEach(snap => {
                 return false;
             });
+        });
+    }
+
+    deleteEvent(eventId: string) {
+        console.log('EventListPage::deleteEvent');
+        this.eventService.deleteEvent(eventId).then(() => {
+            console.log(`Event ${eventId} successfully deleted!`);
+            this.eventList = this.eventList.filter(event => event.id !== eventId);
+        }).catch((error) => {
+            console.error(`Error removing event ${eventId}: ${error}`);
         });
     }
 

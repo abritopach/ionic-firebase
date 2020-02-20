@@ -16,8 +16,7 @@ export class EventService {
 
     constructor(private authService: AuthService) { }
 
-    async createEvent(newEvent: Event):
-     Promise < firebase.firestore.DocumentReference > {
+    async createEvent(newEvent: Event): Promise <firebase.firestore.DocumentReference> {
         const user: firebase.User = await this.authService.getUser();
         this.eventListRef = firebase.firestore().collection(`userProfile/${user.uid}/eventList`);
         // We are using .add() on the eventList sub-collection because we want firebase to append every
@@ -92,6 +91,12 @@ export class EventService {
         const user: firebase.User = await this.authService.getUser();
         this.eventListRef = firebase.firestore().collection(`userProfile/${user.uid}/eventList/${eventId}/guestList`);
         return this.eventListRef.get();
+    }
+
+    async deleteEvent(eventId: string): Promise<void> {
+        const user: firebase.User = await this.authService.getUser();
+        this.eventListRef = firebase.firestore().collection(`userProfile/${user.uid}/eventList`);
+        return this.eventListRef.doc(eventId).delete();
     }
 
 }

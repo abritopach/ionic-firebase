@@ -31,7 +31,7 @@ export class EventCreatePage implements OnInit {
         }
         this.eventService.createEvent(this.event).then(() => {
             // Go back to the HomePage.
-            this.router.navigateByUrl('home');
+            this.router.navigateByUrl('event-list');
         });
     }
 
