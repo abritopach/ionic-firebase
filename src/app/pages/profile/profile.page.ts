@@ -54,7 +54,6 @@ export class ProfilePage implements OnInit {
                     text: 'Save',
                     handler: data => {
                         this.profileService.updateName(data.fullName).then(() => {
-                            console.log('Fullname Changed Successfully');
                             this.userProfile.fullName = data.fullName;
                         })
                         .catch(error => {
@@ -72,7 +71,6 @@ export class ProfilePage implements OnInit {
           return;
         }
         this.profileService.updateDOB(birthDate).then(() => {
-            console.log('Birthdate Changed Successfully');
             this.userProfile.birthDate = birthDate;
         })
         .catch(error => {
@@ -92,7 +90,6 @@ export class ProfilePage implements OnInit {
                     text: 'Save',
                     handler: data => {
                         this.profileService.updateEmail(data.newEmail, data.password).then(() => {
-                            console.log('Email Changed Successfully');
                             this.userProfile.email = data.newEmail;
                         })
                         .catch(error => {

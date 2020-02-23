@@ -23,7 +23,7 @@
 
     <!-- Fab placed to the top and end and on the top edge of the content overlapping header. -->
     <ion-fab vertical="top" horizontal="end" edge slot="fixed">
-        <ion-fab-button color="secondary" size="small" routerLink="/event-create">
+        <ion-fab-button color="secondary" size="small" (click)="presentEventModal('CreateEvent', 'Create')">
             <ion-icon name="add"></ion-icon>
         </ion-fab-button>
     </ion-fab>

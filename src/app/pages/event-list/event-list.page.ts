@@ -19,11 +19,9 @@ export class EventListPage implements OnInit {
     constructor(private eventService: EventService, private modalCtrl: ModalController) { }
 
     ngOnInit() {
-        console.log('EventListPage::ngOnInit');
     }
 
     ionViewDidEnter() {
-        console.log('EventListPage::ionViewDidEnter');
         this.getEventList();
     }
 
@@ -56,7 +54,6 @@ export class EventListPage implements OnInit {
     }
 
     deleteEvent(eventId: string) {
-        console.log('EventListPage::deleteEvent');
         this.eventService.deleteEvent(eventId).then(() => {
             console.log(`Event ${eventId} successfully deleted!`);
             this.eventList = this.eventList.filter(event => event.id !== eventId);
@@ -65,9 +62,9 @@ export class EventListPage implements OnInit {
         });
     }
 
-    async presentEventModal(title: string, buttonText: string, eventId: string) {
-        const event = this.eventList.filter(e => e.id === eventId).pop();
+    async presentEventModal(title: string, buttonText: string, eventId?: string) {
         const isEditMode = buttonText === 'Edit';
+        const event = isEditMode ? this.eventList.filter(e => e.id === eventId).pop() : null;
         const componentProps = { modalProps: { title, buttonText, isEditMode, event}};
         const modal = await this.modalCtrl.create({
             component: EventModalComponent,
@@ -76,8 +73,25 @@ export class EventListPage implements OnInit {
         await modal.present();
         const {data} = await modal.onWillDismiss();
         if (data) {
-            console.log('data', data);
+            if (isEditMode) {
+                // TODO
+                console.log('Edit event');
+            }
+            else {
+                console.log('Create event');
+                this.createEvent(data);
+            }
         }
+    }
+
+    createEvent(event: Event): void {
+        if (event.name === '') {
+            return;
+        }
+        this.eventService.createEvent(event).then((result) => {
+            event.id = result.id;
+            this.eventList.push(event);
+        });
     }
 
 }

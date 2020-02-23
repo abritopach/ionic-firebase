@@ -22,7 +22,6 @@ export class EventFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('isEditMode', this.isEditMode);
         if (this.isEditMode) {
             this.eventForm.patchValue(this.event);
         }
@@ -42,7 +41,6 @@ export class EventFormComponent implements OnInit {
         if (!eventForm.valid) {
             console.log('Form is not valid yet, current value:', eventForm.value);
         } else {
-            console.log(eventForm.value);
             this.formSubmitted.emit(eventForm.value as Event);
         }
     }

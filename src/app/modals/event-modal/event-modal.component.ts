@@ -11,7 +11,6 @@ export class EventModalComponent implements OnInit {
     constructor(private navParams: NavParams, private modalCtrl: ModalController) { }
 
     ngOnInit() {
-        console.log(this.navParams.data.modalProps);
     }
 
     dismiss() {
@@ -21,14 +20,7 @@ export class EventModalComponent implements OnInit {
     }
 
     handleEvent(event) {
-        console.log(event);
-        if (this.navParams.data.modalProps.isEditMode) {
-            // TODO
-            console.log('Edit event');
-        }
-        else {
-            console.log('Create event');
-        }
+        this.modalCtrl.dismiss(event);
     }
 
 }
