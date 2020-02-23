@@ -1,0 +1,20 @@
+<ion-header>
+    <ion-toolbar color="tertiary">
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()">
+                <ion-icon name="close" color="light"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            {{ navParams.data.modalProps?.title }}
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <app-event-form #eventForm (formSubmitted)="handleEvent($event)"
+    [actionButtonText]="navParams.data.modalProps?.buttonText"
+    [isEditMode]="navParams.data.modalProps?.isEditMode"
+    [event]="navParams.data.modalProps?.event">
+    </app-event-form>
+</ion-content>

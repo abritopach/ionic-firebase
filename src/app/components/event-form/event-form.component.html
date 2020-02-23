@@ -1,14 +1,46 @@
 <form [formGroup]="eventForm">
-  <ion-item>
-      <ion-label position="stacked">Name</ion-label>
-      <ion-input formControlName="name" type="text" placeholder="What's your event's name?"
-      [class.invalid]="!eventForm.controls['name'].valid && authForm.controls['name'].touched">
-      </ion-input>
-  </ion-item>
-  <ion-item class="error-message" *ngIf="!authForm.controls['name'].valid && authForm.controls['name'].touched">
-    <ion-label>Please enter a valid event name.</ion-label>
-  </ion-item>
-  <ion-button (click)="submitEvent(eventForm)" expand="block" [disabled]="!eventForm.valid">
-      {{ actionButtonText }}
-  </ion-button>
+    <!-- Event name. -->
+    <ion-item>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input formControlName="name" type="text" placeholder="What's your event's name?"
+        [class.invalid]="!eventForm.controls['name'].valid && eventForm.controls['name'].touched">
+        </ion-input>
+    </ion-item>
+    <ion-item lines="none" class="error-message" *ngIf="!eventForm.controls['name'].valid && eventForm.controls['name'].touched">
+        <ion-label>Please enter a valid event name.</ion-label>
+    </ion-item>
+    <!-- Event price. -->
+    <ion-item>
+        <ion-label position="stacked">Price</ion-label>
+        <ion-input formControlName="price" type="number" placeholder="How much will guests pay?"
+        [class.invalid]="!eventForm.controls['price'].valid && eventForm.controls['price'].touched">
+        </ion-input>
+    </ion-item>
+    <ion-item lines="none" class="error-message" *ngIf="!eventForm.controls['price'].valid && eventForm.controls['price'].touched">
+        <ion-label>Please enter a valid event price.</ion-label>
+    </ion-item>
+    <!-- Event cost. -->
+    <ion-item>
+        <ion-label position="stacked">Cost</ion-label>
+        <ion-input formControlName="cost" type="number" placeholder="How much are you spending?"
+        [class.invalid]="!eventForm.controls['cost'].valid && eventForm.controls['cost'].touched">
+        </ion-input>
+    </ion-item>
+    <ion-item lines="none" class="error-message" *ngIf="!eventForm.controls['cost'].valid && eventForm.controls['cost'].touched">
+        <ion-label>Please enter a valid event cost.</ion-label>
+    </ion-item>
+    <!-- Event date. -->
+    <ion-item>
+        <ion-label>Event Date</ion-label>
+        <ion-datetime formControlName="date" displayFormat="D MMM, YY" pickerFormat="DD MMM YYYY" min="2017" max="2020-12-31"
+        [class.invalid]="!eventForm.controls['date'].valid && eventForm.controls['date'].touched">
+        </ion-datetime>
+    </ion-item>
+    <ion-item lines="none" class="error-message" *ngIf="!eventForm.controls['date'].valid && eventForm.controls['date'].touched">
+        <ion-label>Please enter a valid event date.</ion-label>
+    </ion-item>
+
+    <ion-button (click)="submitEvent(eventForm)" expand="block" [disabled]="!eventForm.valid">
+        {{ actionButtonText }}
+    </ion-button>
 </form>

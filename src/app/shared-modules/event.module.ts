@@ -4,17 +4,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { AuthFormComponent } from '../components/auth-form/auth-form.component';
+import { EventFormComponent } from '../components/event-form/event-form.component';
 
 @NgModule({
-  declarations: [AuthFormComponent],
+  declarations: [EventFormComponent],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     ReactiveFormsModule
   ],
-  exports: [AuthFormComponent],
-  entryComponents: [AuthFormComponent]
+  exports: [EventFormComponent],
+  entryComponents: [EventFormComponent]
 })
-export class AuthModule { }
+export class EventModule { }
