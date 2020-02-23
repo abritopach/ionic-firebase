@@ -99,4 +99,13 @@ export class EventService {
         return this.eventListRef.doc(eventId).delete();
     }
 
+    async updateEvent(eventId: string, updatedEvent: Event): Promise<void> {
+        const user: firebase.User = await this.authService.getUser();
+        this.eventListRef = firebase.firestore().collection(`userProfile/${user.uid}/eventList`);
+        updatedEvent.price = updatedEvent.price * 1;
+        updatedEvent.cost = updatedEvent.cost * 1;
+        updatedEvent.revenue = updatedEvent.cost * -1;
+        return this.eventListRef.doc(eventId).update(updatedEvent);
+    }
+
 }

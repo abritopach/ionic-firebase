@@ -76,6 +76,7 @@ export class EventListPage implements OnInit {
             if (isEditMode) {
                 // TODO
                 console.log('Edit event');
+                this.updateEvent(eventId, data);
             }
             else {
                 console.log('Create event');
@@ -91,6 +92,16 @@ export class EventListPage implements OnInit {
         this.eventService.createEvent(event).then((result) => {
             event.id = result.id;
             this.eventList.push(event);
+        });
+    }
+
+    updateEvent(eventId: string, updatedEvent: Event) {
+        this.eventService.updateEvent(eventId, updatedEvent).then(() => {
+            this.eventList.forEach(event => {
+                if (event.id === eventId) {
+                    event = {...updatedEvent};
+                }
+            });
         });
     }
 
