@@ -17,6 +17,7 @@ export class EventDetailPage implements OnInit {
     private currentEvent: Event;
     private guestName = '';
     private guestPicture: string = null;
+    guestList = [];
 
     constructor(private eventService: EventService, private route: ActivatedRoute,) { }
 
@@ -26,6 +27,7 @@ export class EventDetailPage implements OnInit {
             this.currentEvent = eventSnapshot.data() as Event;
             this.currentEvent.id = eventSnapshot.id;
         });
+        this.getEventGuestsList(eventId);
     }
 
     addGuest(guestName: string): void {
@@ -49,6 +51,15 @@ export class EventDetailPage implements OnInit {
         } catch (error) {
             console.error(error);
         }
+    }
+
+    getEventGuestsList(eventId: string) {
+        this.eventService.getEventGuestsList(eventId).then(eventGuestsListSnapshot => {
+            eventGuestsListSnapshot.forEach(snap => {
+                console.log(snap.data().guestName)
+                this.guestList.push(snap.data().guestName);
+            });
+        });
     }
 
 }

@@ -14,6 +14,8 @@ This project shows you how to:
     * Working with Collections.
     * Working with Transactions.
     * Camera API & Firebase Storage.
+    * CRUD events.
+    * Added guest to event.
 
 ## Running
 
