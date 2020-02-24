@@ -32,6 +32,24 @@ export class EventService {
         return this.eventListRef.add(newEvent);
     }
 
+    async detectEventsChanges() {
+        const user: firebase.User = await this.authService.getUser();
+        this.eventListRef = firebase.firestore().collection(`userProfile/${user.uid}/eventList`);
+        this.eventListRef.onSnapshot(querySnapshot => {
+            querySnapshot.docChanges().forEach(change => {
+                if (change.type === "added") {
+                    console.log("New event: ", change.doc.data());
+                }
+                if (change.type === "modified") {
+                    console.log("Modified event: ", change.doc.data());
+                }
+                if (change.type === "removed") {
+                    console.log("Removed event: ", change.doc.data());
+                }
+            });
+        });
+    }
+
     async getEventList(): Promise<firebase.firestore.QuerySnapshot> {
         const user: firebase.User = await this.authService.getUser();
         this.eventListRef = firebase.firestore().collection(`userProfile/${user.uid}/eventList`);

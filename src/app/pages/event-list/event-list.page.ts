@@ -16,7 +16,8 @@ export class EventListPage implements OnInit {
     private eventList: Array<Event>;
     private eventGuests = {};
 
-    constructor(private eventService: EventService, private modalCtrl: ModalController) { }
+    constructor(private eventService: EventService, private modalCtrl: ModalController) {
+    }
 
     ngOnInit() {
     }
@@ -56,7 +57,7 @@ export class EventListPage implements OnInit {
     deleteEvent(eventId: string) {
         this.eventService.deleteEvent(eventId).then(() => {
             console.log(`Event ${eventId} successfully deleted!`);
-            this.eventList = this.eventList.filter(event => event.id !== eventId);
+            this.getEventList();
         }).catch((error) => {
             console.error(`Error removing event ${eventId}: ${error}`);
         });
@@ -74,7 +75,6 @@ export class EventListPage implements OnInit {
         const {data} = await modal.onWillDismiss();
         if (data) {
             if (isEditMode) {
-                // TODO
                 console.log('Edit event');
                 this.updateEvent(eventId, data);
             }
@@ -89,19 +89,14 @@ export class EventListPage implements OnInit {
         if (event.name === '') {
             return;
         }
-        this.eventService.createEvent(event).then((result) => {
-            event.id = result.id;
-            this.eventList.push(event);
+        this.eventService.createEvent(event).then(() => {
+            this.getEventList();
         });
     }
 
     updateEvent(eventId: string, updatedEvent: Event) {
         this.eventService.updateEvent(eventId, updatedEvent).then(() => {
-            this.eventList.forEach(event => {
-                if (event.id === eventId) {
-                    event = {...updatedEvent};
-                }
-            });
+            this.getEventList();
         });
     }
 
