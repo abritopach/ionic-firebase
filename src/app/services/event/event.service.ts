@@ -126,4 +126,10 @@ export class EventService {
         return this.eventListRef.doc(eventId).update(updatedEvent);
     }
 
+    async deleteGuest(eventId: string, guestId: string): Promise<void> {
+        const user: firebase.User = await this.authService.getUser();
+        const guestList = firebase.firestore().collection(`userProfile/${user.uid}/eventList/${eventId}/guestList`);
+        return guestList.doc(guestId).delete();
+    }
+
 }

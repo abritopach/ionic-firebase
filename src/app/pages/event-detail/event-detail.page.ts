@@ -62,4 +62,8 @@ export class EventDetailPage implements OnInit {
         });
     }
 
+    deleteGuest(guest: string) {
+        // TODO: Delete guest.
+    }
+
 }
