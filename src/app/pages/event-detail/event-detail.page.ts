@@ -19,6 +19,9 @@ export class EventDetailPage implements OnInit {
     private guestName = '';
     private guestPicture: string = null;
     guestList: Guest[] = [];
+    buttonText = 'Add Guest';
+    isEditMode = false;
+    oldGuestName = '';
 
     constructor(private eventService: EventService, private route: ActivatedRoute,) { }
 
@@ -74,6 +77,28 @@ export class EventDetailPage implements OnInit {
         }).catch((error) => {
             console.error(`Error removing guest ${guestId}: ${error}`);
         });
+    }
+
+    updateGuest(guestName: string) {
+        const guest: Guest = this.guestList.filter(g => g.guestName === this.oldGuestName).pop();
+        guest.guestName = guestName;
+        this.eventService.updateGuest(this.currentEvent.id, guest).then(() => {
+            this.buttonText = 'Add Guest';
+            this.guestName = '';
+            this.isEditMode != this.isEditMode;
+
+        }).catch((error) => {
+            console.error(`Error updating guest ${guest.id}: ${error}`);
+        });
+    }
+
+    onClickHandler(guestName: string) {
+        if (this.isEditMode) {
+            this.updateGuest(guestName);
+        }
+        else {
+            this.addGuest(guestName);
+        }
     }
 
 }

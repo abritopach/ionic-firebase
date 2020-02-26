@@ -24,7 +24,7 @@
     </ion-card>
 
     <ion-card class="add-guest-form">
-        <ion-card-header> Add Guests </ion-card-header>
+        <ion-card-header> {{ buttonText }} </ion-card-header>
         <ion-card-content>
             <ion-row>
                 <ion-col size="8">
@@ -42,8 +42,8 @@
             </ion-row>
             <span *ngIf="guestPicture">Picture taken!</span>
 
-            <ion-button color="primary" expand="block" (click)="addGuest(guestName)" [disabled]="!guestName">
-                Add Guest
+            <ion-button color="primary" expand="block" (click)="onClickHandler(guestName)" [disabled]="!guestName">
+                {{ buttonText }}
             </ion-button>
         </ion-card-content>
     </ion-card>
@@ -61,7 +61,9 @@
                 <ion-icon name="swap-horizontal-outline" slot="end"></ion-icon>
             </ion-item>
             <ion-item-options side="end">
-                <ion-item-option>Edit</ion-item-option>
+                <ion-item-option (click)="isEditMode=!isEditMode; oldGuestName = guest.guestName; guestName = guest.guestName; buttonText = 'Edit Guest'">
+                    Edit
+                </ion-item-option>
                 <ion-item-option color="danger" (click)="deleteGuest(currentEvent.id, guest.id)">Delete</ion-item-option>
             </ion-item-options>
         </ion-item-sliding>

@@ -5,6 +5,7 @@ import 'firebase/storage';
 import { AuthService } from '../user/auth.service';
 
 import { Event } from '../../models/event';
+import { Guest } from 'src/app/models/guest';
 
 @Injectable({
     providedIn: 'root'
@@ -130,6 +131,12 @@ export class EventService {
         const user: firebase.User = await this.authService.getUser();
         const guestList = firebase.firestore().collection(`userProfile/${user.uid}/eventList/${eventId}/guestList`);
         return guestList.doc(guestId).delete();
+    }
+
+    async updateGuest(eventId: string, guest: Guest): Promise<void> {
+        const user: firebase.User = await this.authService.getUser();
+        const guestList = firebase.firestore().collection(`userProfile/${user.uid}/eventList/${eventId}/guestList`);
+        return guestList.doc(guest.id).update(guest);
     }
 
 }
