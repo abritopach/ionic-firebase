@@ -3,6 +3,7 @@ import { EventService } from '../../services/event/event.service';
 import { ActivatedRoute } from '@angular/router';
 
 import { Event } from '../../models/event';
+import { Guest } from '../../models/guest';
 
 import { Plugins, CameraResultType } from '@capacitor/core';
 const { Camera } = Plugins;
@@ -17,7 +18,7 @@ export class EventDetailPage implements OnInit {
     private currentEvent: Event;
     private guestName = '';
     private guestPicture: string = null;
-    guestList = [];
+    guestList: Guest[] = [];
 
     constructor(private eventService: EventService, private route: ActivatedRoute,) { }
 
@@ -36,6 +37,7 @@ export class EventDetailPage implements OnInit {
             this.currentEvent.revenue = this.currentEvent.revenue + this.currentEvent.price;
             this.guestName = '';
             this.guestPicture = null;
+            this.getEventGuestsList(this.currentEvent.id);
         });
     }
 
@@ -55,15 +57,23 @@ export class EventDetailPage implements OnInit {
 
     getEventGuestsList(eventId: string) {
         this.eventService.getEventGuestsList(eventId).then(eventGuestsListSnapshot => {
+            this.guestList = [];
             eventGuestsListSnapshot.forEach(snap => {
-                console.log(snap.data().guestName)
-                this.guestList.push(snap.data().guestName);
+                const guest: Guest = {
+                    id: snap.id,
+                    guestName: snap.data() .guestName
+                };
+                this.guestList.push(guest);
             });
         });
     }
 
-    deleteGuest(guest: string) {
-        // TODO: Delete guest.
+    deleteGuest(eventId: string, guestId: string) {
+        this.eventService.deleteGuest(eventId, guestId).then(() => {
+            this.getEventGuestsList(eventId);
+        }).catch((error) => {
+            console.error(`Error removing guest ${guestId}: ${error}`);
+        });
     }
 
 }
