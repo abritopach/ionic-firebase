@@ -136,7 +136,9 @@ export class EventService {
     async updateGuest(eventId: string, guest: Guest): Promise<void> {
         const user: firebase.User = await this.authService.getUser();
         const guestList = firebase.firestore().collection(`userProfile/${user.uid}/eventList/${eventId}/guestList`);
-        return guestList.doc(guest.id).update(guest);
+        const newGuest = {...guest};
+        delete newGuest.id;
+        return guestList.doc(guest.id).update(newGuest);
     }
 
 }
