@@ -71,9 +71,10 @@ export class EventDetailPage implements OnInit {
         });
     }
 
-    deleteGuest(eventId: string, guestId: string) {
-        this.eventService.deleteGuest(eventId, guestId).then(() => {
-            this.getEventGuestsList(eventId);
+    deleteGuest(event: Event, guestId: string) {
+        this.eventService.deleteGuest(event, guestId).then(() => {
+            this.getEventGuestsList(event.id);
+            this.currentEvent.revenue = this.currentEvent.revenue - this.currentEvent.price;
         }).catch((error) => {
             console.error(`Error removing guest ${guestId}: ${error}`);
         });

@@ -127,10 +127,20 @@ export class EventService {
         return this.eventListRef.doc(eventId).update(updatedEvent);
     }
 
-    async deleteGuest(eventId: string, guestId: string): Promise<void> {
-        const user: firebase.User = await this.authService.getUser();
-        const guestList = firebase.firestore().collection(`userProfile/${user.uid}/eventList/${eventId}/guestList`);
-        return guestList.doc(guestId).delete();
+    async deleteGuest(event: Event, guestId: string): Promise<void> {
+        return this.eventListRef
+        .doc(event.id)
+        .collection('guestList')
+        .doc(guestId).delete()
+        .then(() => {
+            return firebase.firestore().runTransaction(transaction => {
+                return transaction.get(this.eventListRef.doc(event.id)).then(eventDoc => {
+                    const newRevenue = eventDoc.data().revenue - event.price;
+                    transaction.update(this.eventListRef.doc(event.id), { revenue: newRevenue });
+                });
+            });
+        });
+
     }
 
     async updateGuest(eventId: string, guest: Guest): Promise<void> {

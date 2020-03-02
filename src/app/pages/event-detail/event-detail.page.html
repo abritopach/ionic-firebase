@@ -64,7 +64,7 @@
                 <ion-item-option (click)="isEditMode=!isEditMode; oldGuestName = guest.guestName; guestName = guest.guestName; buttonText = 'Edit Guest'">
                     Edit
                 </ion-item-option>
-                <ion-item-option color="danger" (click)="deleteGuest(currentEvent.id, guest.id)">Delete</ion-item-option>
+                <ion-item-option color="danger" (click)="deleteGuest(currentEvent, guest.id)">Delete</ion-item-option>
             </ion-item-options>
         </ion-item-sliding>
     </ion-list>
