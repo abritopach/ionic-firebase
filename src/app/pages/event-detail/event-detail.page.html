@@ -9,6 +9,7 @@
 
 <ion-content class="ion-padding">
     <ion-card>
+        <img src="https://placeimg.com/640/320/any" alt="Event picture" style="width:100%" />
         <ion-card-header>
             <ion-card-title>Event Info</ion-card-title>
         </ion-card-header>
@@ -19,6 +20,7 @@
                 </span>
             </p>
             <p>Ticket: <strong>${{currentEvent?.price}}</strong></p>
+            <p>Cost: <strong>${{currentEvent?.cost}}</strong></p>
             <p>Date: <strong>{{currentEvent?.date | date}}</strong></p>
         </ion-card-content>
     </ion-card>
