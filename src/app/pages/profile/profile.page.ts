@@ -5,6 +5,9 @@ import { ProfileService } from 'src/app/services/user/profile.service';
 import { AlertController } from '@ionic/angular';
 import { UserProfile } from 'src/app/models/user';
 
+import { Plugins, CameraResultType } from '@capacitor/core';
+const { Camera } = Plugins;
+
 @Component({
     selector: 'app-profile',
     templateUrl: './profile.page.html',
@@ -119,6 +122,20 @@ export class ProfilePage implements OnInit {
             ]
         });
         return await alert.present();
+    }
+
+    async takePicture(): Promise<void> {
+        try {
+            // We are calling the Camera API from Capacitor and giving it a few options, most of them are obvious
+            //  by their names, the most important one is resultType because it's the one that will give you the
+            // format of the image, either a base64 string or the native path to the actual file.
+            // We're using the base64 string because Firebase Cloud Storage has a .putString() method that takes
+            // a base64 string and uploads the picture from it.
+            const profilePicture = await Camera.getPhoto({quality: 90, allowEditing: false, resultType: CameraResultType.Base64});
+            console.log(profilePicture);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
 }

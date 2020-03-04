@@ -12,8 +12,11 @@
         <ion-list-header> Personal Information </ion-list-header>
     </ion-list>
     <ion-avatar>
-        <img src="https://i.pravatar.cc/300" alt="Profile picture">
+        <img src="assets/avatar.png" alt="Profile picture">
     </ion-avatar>
+    <ion-button (click)="takePicture()">
+        <ion-icon slot="icon-only" name="camera"></ion-icon>
+    </ion-button>
     <form>
         <ion-item (click)="updateName()">
             <ion-label>
