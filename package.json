@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@angular-devkit/architect": "^0.900.4",
-    "@angular-devkit/build-angular": "^0.900.4",
+    "@angular-devkit/build-angular": "^15.0.4",
     "@angular-devkit/core": "^9.0.4",
     "@angular-devkit/schematics": "^9.0.4",
     "@angular/cli": "^9.0.4",
@@ -42,7 +42,7 @@
     "@angular/compiler-cli": "^9.0.4",
     "@angular/language-service": "^9.0.4",
     "@capacitor/cli": "1.5.0",
-    "@ionic/angular-toolkit": "^2.2.0",
+    "@ionic/angular-toolkit": "^2.3.3",
     "@types/jasmine": "~3.5.7",
     "@types/jasminewd2": "~2.0.8",
     "@types/node": "~13.7.7",
